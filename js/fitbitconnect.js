@@ -247,25 +247,28 @@
                     },
                     success: function(data) {
                         if (data.sleep.length > 0) {
-                            var sleepData = [];
-                            var sleepShortData = [];
-
-                            if (data.sleep[0].levels.hasOwnProperty('data')) {
-                                sleepData = data.sleep[0].levels.data;
-                            }
-                            if (data.sleep[0].levels.hasOwnProperty('shortData')) {
-                                sleepShortData = data.sleep[0].levels.shortData;
-                            }
-                            var sleepAllData = sleepData.concat(sleepShortData);
-                            for (var i = 0; i < sleepAllData.length; i++) {
-                                var entry = {};
-                                time = new Date(sleepAllData[i].dateTime);
-                                entry.seconds = sleepAllData[i].seconds;
-                                entry.activitySecond = new Date(time);
-                                time.setSeconds(0);
-                                entry.activityMinute = new Date(time);
-                                entry.level = sleepAllData[i].level;
-                                activityArray.push(entry);
+                            for(var j=0; j<data.sleep.length; j++){
+                                var sleepData = [];
+                                var sleepShortData = [];
+                                
+                                if (data.sleep[j].levels.hasOwnProperty('data')) {
+                                    sleepData = data.sleep[j].levels.data;
+                                }
+                                if (data.sleep[j].levels.hasOwnProperty('shortData')) {
+                                    sleepShortData = data.sleep[j].levels.shortData;
+                                }
+                                
+                                var sleepAllData = sleepData.concat(sleepShortData);
+                                for (var i = 0; i < sleepAllData.length; i++) {
+                                    var entry = {};
+                                    time = new Date(sleepAllData[i].dateTime);
+                                    entry.seconds = sleepAllData[i].seconds;
+                                    entry.activitySecond = new Date(time);
+                                    time.setSeconds(0);
+                                    entry.activityMinute = new Date(time);
+                                    entry.level = sleepAllData[i].level;
+                                    activityArray.push(entry);
+                                }
                             }
                             table.appendRows(activityArray)
                         }
